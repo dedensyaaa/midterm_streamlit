@@ -13,7 +13,7 @@ sales = pd.read_csv('vgsales.csv')
 sales.dropna(how="any", inplace=True)
 sales['Year'] = sales['Year'].astype(int)
 
-option = st.sidebar.selectbox("Go to", ["Introduction", "Dataset", "Visualization", "Conclusion"])
+option = st.sidebar.selectbox("Contents", ["Introduction", "Dataset", "Visualization", "Conclusion"])
 if option == "Introduction":
     st.header("Introduction")
 
