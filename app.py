@@ -6,7 +6,6 @@ import seaborn as sns
 import missingno as msno
 import io
 
-# Set Streamlit app title
 st.title('Video Game Sales Data Analysis')
 
 # Load dataset
@@ -17,6 +16,9 @@ sales['Year'] = sales['Year'].astype(int)
 option = st.sidebar.selectbox("Go to", ["Introduction", "Dataset", "Visualization", "Conclusion"])
 if option == "Introduction":
     st.header("Introduction")
+
+    st.image("Game.gif", use_column_width=True)
+
     st.write("""
     This analysis delves into video game sales data, focusing on various sales metrics across different regions, including North America (NA Sales), Japan (JP Sales), Europe (EU Sales), and other territories. Additionally, we will consider the influence of the game publisher and its release year on sales performance.
 
@@ -26,50 +28,38 @@ Utilizing statistical methods and data visualization techniques, this analysis s
     """)
 
 elif option == "Dataset":
-    st.subheader("Source:")
-    st.write("""
-    https://www.kaggle.com/code/berkkarabilliolu/game-sales-data-analysis-vizualizations-ml-90/notebook
-    """)
     st.header("Dataset Overview")
-    # Show basic info and data
-    st.write(sales.head())  # Display the first few rows of the dataset
-    st.write(sales.describe())  # Show dataset statistics
-    st.write("""
-    In this Dataset we have 11 columns
+    
+    st.subheader("Preview of the Dataset")
+    st.write(sales.head())
+    
+    st.subheader("Missing Data Overview")
+    st.markdown("""
+        The following matrix visualizes any missing data within the dataset. It's crucial to identify missing values early in the analysis process as they can significantly impact the quality of our insights.
+        """)
+    st.image("outputgamematrix.png", caption="Missing Data Matrix", use_column_width=True)
 
-        Rank - ranking for sales,int
-
-        Name - The games name, object
-
-        Platform - Platform of the relase (Wii,Ps4 etc.), object
-
-        Year - Year of the relase date, float
-
-        Genre - Genre of the game ,object
-
-        Publisher - Publisher of the game
-
-        NA_Sales - Sales in NA
-
-        EU_Sales - Sales in EU
-
-        JP_Sales - Sales in JP
-
-        Other_Sales - Sales in the other Nations
-
-        Global_Sales - Total Sales
+    st.subheader("Dataset Statistics")
+    st.write(sales.describe())
+    
+    st.markdown("""
+    The dataset consists of several columns with sales figures from different regions, including North America (NA), Europe (EU), Japan (JP), and global sales. Here's a quick review:
+    
+    - **Mean and Median**: Indicate the average and middle sales figures respectively. 
+    - **Standard Deviation**: Reflects the variability of the sales data.
+    - **Minimum and Maximum**: Show the range of sales, from the lowest to the highest observed in the dataset.
+    
+    These statistics give us an initial overview of the spread and concentration of sales figures across different regions.
     """)
-    # Visualize missing data
-    st.header("Missing Data Visualization")
-    msno_plt = msno.matrix(sales)
-    plt.figure(figsize=(10, 6))
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    img.seek(0)
-    st.image(img, caption="Missing Data Matrix", use_column_width=True)
-    plt.close()
 
-    # Helper function for statistics
+    
+
+    # Display statistics for each sales column with interpretation
+    st.header("Sales Statistics by Region")
+    st.markdown("""
+    Below, statistical insights are provided for video game sales in different regions, including North America (NA), Europe (EU), Japan (JP), and Global sales:
+    """)
+    
     def print_statistics(column_name, column_data):
         stats = {
             "Mean": column_data.mean(),
@@ -79,13 +69,45 @@ elif option == "Dataset":
             "Median": column_data.median()
         }
         return stats
-    # Display column statistics in Streamlit
-    st.header("Statistics for Sales Columns")
+
+    # Loop through sales columns and display statistics for each region
     for column_name in ['NA_Sales', 'EU_Sales', 'JP_Sales', 'Global_Sales']:
         column_data = sales[column_name]
-        st.subheader(f"Statistics for {column_name}")
+        st.subheader(f"Statistics for {column_name.replace('_', ' ')}")
         stats = print_statistics(column_name, column_data)
         st.write(stats)
+        
+        # Add interpretations for each region's sales
+        if column_name == 'NA_Sales':
+            st.markdown("""
+            **North American Sales (NA_Sales)**:
+            - The highest sales concentration is observed in this region.
+            - The spread (as seen by the standard deviation) suggests that some games have exceptionally high sales compared to others.
+            """)
+        elif column_name == 'EU_Sales':
+            st.markdown("""
+            **European Sales (EU_Sales)**:
+            - The average sales are lower compared to North America.
+            - However, there are several games that performed well in Europe, indicated by the maximum sales value.
+            """)
+        elif column_name == 'JP_Sales':
+            st.markdown("""
+            **Japanese Sales (JP_Sales)**:
+            - Sales in Japan are significantly lower in comparison to NA and EU, indicating a smaller market size or different preferences.
+            """)
+        elif column_name == 'Global_Sales':
+            st.markdown("""
+            **Global Sales (Global_Sales)**:
+            - These are the total sales figures across all regions.
+            - The large standard deviation suggests that global hits significantly outperform others in the market.
+            """)
+
+    # Source information
+    st.subheader("Source:")
+    st.write("""
+    This dataset is sourced from Kaggle. You can explore it further here:  
+    [Game Sales Data Analysis](https://www.kaggle.com/code/berkkarabilliolu/game-sales-data-analysis-vizualizations-ml-90/notebook)
+    """)
 
 
 elif option == "Visualization":
