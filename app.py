@@ -20,7 +20,7 @@ if option == "Introduction":
     st.image("Game.gif", use_column_width=True)
 
     st.write("""
-    This analysis delves into video game sales data, focusing on various sales metrics across different regions, including North America (NA Sales), Japan (JP Sales), Europe (EU Sales), and other territories. Additionally, we will consider the influence of the game publisher and its release year on sales performance.
+    This analysis delves into video game sales data of 1980 to 2023, focusing on various sales metrics across different regions, including North America (NA Sales), Japan (JP Sales), Europe (EU Sales), and other territories. Additionally, we will consider the influence of the game publisher and its release year on sales performance.
 
 By examining these variables, we aim to identify patterns and trends that reveal how regional markets respond to different titles and genres. Analyzing sales data in relation to the publisher can provide insights into successful marketing strategies, while exploring the impact of the release year will help us understand how market dynamics evolve over time.
 
